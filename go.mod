@@ -1,4 +1,4 @@
-module utilities-payment-protos
+module github.com/iskanye/utilities-payment-proto
 
 go 1.25.3
 
