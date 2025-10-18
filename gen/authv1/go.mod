@@ -1,4 +1,4 @@
-module auth.v1
+module authv1
 
 go 1.25.3
 

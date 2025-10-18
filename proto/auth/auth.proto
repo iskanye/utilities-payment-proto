@@ -3,7 +3,7 @@ syntax = "proto3";
 package auth;
 
 // Настройки для генерации Go кода.
-option go_package = "auth.v1;authv1";
+option go_package = "authv1;authv1";
 
 service Auth {
   rpc Register (RegisterRequest) returns (RegisterResponse);
