@@ -1,0 +1,15 @@
+# ./Taskfile.yaml
+# See: https://taskfile.dev/api/  
+
+version: "3"  
+
+tasks:  
+  default:
+    cmds:  
+      - task: auth  
+  auth:
+    aliases:
+      - gen  
+    desc: "Generate auth gRPC code"  
+    cmds:
+      - protoc -I=auth --go_out=auth --go_opt=paths=source_relative --go-grpc_out=auth --go-grpc_opt=paths=source_relative auth/auth.proto
