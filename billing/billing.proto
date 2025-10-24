@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package billing;
 
-option go_package = "github.com/iskanye/utilities-payment-protos/billing";
+option go_package = "github.com/iskanye/utilities-payment-proto/billing";
 
 service Billing {
     rpc AddBill (Bill) returns (BillResponse);

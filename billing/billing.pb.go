@@ -128,7 +128,7 @@ const file_billing_proto_rawDesc = "" +
 	"\fBillResponse\x12\x17\n" +
 	"\abill_id\x18\x01 \x01(\x03R\x06billId2:\n" +
 	"\aBilling\x12/\n" +
-	"\aAddBill\x12\r.billing.Bill\x1a\x15.billing.BillResponseB5Z3github.com/iskanye/utilities-payment-protos/billingb\x06proto3"
+	"\aAddBill\x12\r.billing.Bill\x1a\x15.billing.BillResponseB4Z2github.com/iskanye/utilities-payment-proto/billingb\x06proto3"
 
 var (
 	file_billing_proto_rawDescOnce sync.Once

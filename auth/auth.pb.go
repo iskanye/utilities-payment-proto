@@ -342,7 +342,7 @@ const file_auth_proto_rawDesc = "" +
 	"\x04Auth\x129\n" +
 	"\bRegister\x12\x15.auth.RegisterRequest\x1a\x16.auth.RegisterResponse\x120\n" +
 	"\x05Login\x12\x12.auth.LoginRequest\x1a\x13.auth.LoginResponse\x129\n" +
-	"\bValidate\x12\x15.auth.ValidateRequest\x1a\x16.auth.ValidateResponseB2Z0github.com/iskanye/utilities-payment-protos/authb\x06proto3"
+	"\bValidate\x12\x15.auth.ValidateRequest\x1a\x16.auth.ValidateResponseB1Z/github.com/iskanye/utilities-payment-proto/authb\x06proto3"
 
 var (
 	file_auth_proto_rawDescOnce sync.Once

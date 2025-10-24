@@ -3,7 +3,7 @@ syntax = "proto3";
 package auth;
 
 // Настройки для генерации Go кода.
-option go_package = "github.com/iskanye/utilities-payment-protos/auth";
+option go_package = "github.com/iskanye/utilities-payment-proto/auth";
 
 service Auth {
   rpc Register (RegisterRequest) returns (RegisterResponse);
