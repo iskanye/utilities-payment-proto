@@ -19,7 +19,6 @@ service Auth {
 message RegisterRequest {
   string email = 1; 
   string password = 2; 
-  string address = 3;
 }
 
 message RegisterResponse {
@@ -32,8 +31,7 @@ message LoginRequest {
 }
 
 message LoginResponse {
-  string token = 1;  
-  string address = 2;
+  string token = 1;
 }
 
 message ValidateRequest {
