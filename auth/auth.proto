@@ -8,7 +8,6 @@ option go_package = "github.com/iskanye/utilities-payment-protos/auth";
 service Auth {
   rpc Register (RegisterRequest) returns (RegisterResponse);
   rpc Login (LoginRequest) returns (LoginResponse);
-  rpc Validate (ValidateRequest) returns (ValidateResponse);
 }
 
 // TODO: Разрешения пользователя
@@ -32,12 +31,4 @@ message LoginRequest {
 
 message LoginResponse {
   string token = 1;
-}
-
-message ValidateRequest {
-  string token = 1;
-}
-
-message ValidateResponse {
-  bool isValid = 1;
 }
