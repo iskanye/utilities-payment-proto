@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package billing;
+
+option go_package = "github.com/iskanye/utilities-payment-protos/billing";
+
+service Billing {
+    rpc AddBill (Bill) returns (BillResponse);
+}
+
+message Bill {
+    string address = 1;
+    int32 amount = 2;
+}
+
+message BillResponse {
+    int64 bill_id = 1;
+}
