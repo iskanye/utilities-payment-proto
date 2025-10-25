@@ -9,12 +9,8 @@ service Auth {
   rpc Register (RegisterRequest) returns (RegisterResponse);
   rpc Login (LoginRequest) returns (LoginResponse);
   rpc Validate (ValidateRequest) returns (ValidateResponse);
+  rpc IsAdmin (User) returns (Permissions);
 }
-
-// TODO: Разрешения пользователя
-// service Permissions {
-//    GetUserPermissions(GetUserPermissionsRequest) return UserPermissions
-// }
 
 message RegisterRequest {
   string email = 1; 
@@ -32,6 +28,7 @@ message LoginRequest {
 
 message LoginResponse {
   string token = 1;
+  int64 user_id = 2; 
 }
 
 message ValidateRequest {
@@ -40,4 +37,12 @@ message ValidateRequest {
 
 message ValidateResponse {
   bool isValid = 1;
+}
+
+message User {
+  int64 user_id = 1;
+}
+
+message Permissions {
+  bool isAdmin = 1;
 }
