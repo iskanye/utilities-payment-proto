@@ -10,8 +10,9 @@ service Billing {
 }
 
 message Bill {
-    string address = 1;
-    int32 amount = 2;
+    optional int64 bill_id = 1;
+    string address = 2;
+    int32 amount = 3;
 }
 
 message BillResponse {

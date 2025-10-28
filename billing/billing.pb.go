@@ -23,8 +23,9 @@ const (
 
 type Bill struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Address       string                 `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
-	Amount        int32                  `protobuf:"varint,2,opt,name=amount,proto3" json:"amount,omitempty"`
+	BillId        *int64                 `protobuf:"varint,1,opt,name=bill_id,json=billId,proto3,oneof" json:"bill_id,omitempty"`
+	Address       string                 `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
+	Amount        int32                  `protobuf:"varint,3,opt,name=amount,proto3" json:"amount,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -57,6 +58,13 @@ func (x *Bill) ProtoReflect() protoreflect.Message {
 // Deprecated: Use Bill.ProtoReflect.Descriptor instead.
 func (*Bill) Descriptor() ([]byte, []int) {
 	return file_billing_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *Bill) GetBillId() int64 {
+	if x != nil && x.BillId != nil {
+		return *x.BillId
+	}
+	return 0
 }
 
 func (x *Bill) GetAddress() string {
@@ -165,10 +173,13 @@ var File_billing_proto protoreflect.FileDescriptor
 
 const file_billing_proto_rawDesc = "" +
 	"\n" +
-	"\rbilling.proto\x12\abilling\"8\n" +
-	"\x04Bill\x12\x18\n" +
-	"\aaddress\x18\x01 \x01(\tR\aaddress\x12\x16\n" +
-	"\x06amount\x18\x02 \x01(\x05R\x06amount\"'\n" +
+	"\rbilling.proto\x12\abilling\"b\n" +
+	"\x04Bill\x12\x1c\n" +
+	"\abill_id\x18\x01 \x01(\x03H\x00R\x06billId\x88\x01\x01\x12\x18\n" +
+	"\aaddress\x18\x02 \x01(\tR\aaddress\x12\x16\n" +
+	"\x06amount\x18\x03 \x01(\x05R\x06amountB\n" +
+	"\n" +
+	"\b_bill_id\"'\n" +
 	"\fBillResponse\x12\x17\n" +
 	"\abill_id\x18\x01 \x01(\x03R\x06billId\"(\n" +
 	"\fBillsRequest\x12\x18\n" +
@@ -212,6 +223,7 @@ func file_billing_proto_init() {
 	if File_billing_proto != nil {
 		return
 	}
+	file_billing_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
