@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Billing_AddBill_FullMethodName = "/billing.Billing/AddBill"
+	Billing_AddBill_FullMethodName  = "/billing.Billing/AddBill"
+	Billing_GetBills_FullMethodName = "/billing.Billing/GetBills"
 )
 
 // BillingClient is the client API for Billing service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BillingClient interface {
 	AddBill(ctx context.Context, in *Bill, opts ...grpc.CallOption) (*BillResponse, error)
+	GetBills(ctx context.Context, in *BillsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Bill], error)
 }
 
 type billingClient struct {
@@ -47,11 +49,31 @@ func (c *billingClient) AddBill(ctx context.Context, in *Bill, opts ...grpc.Call
 	return out, nil
 }
 
+func (c *billingClient) GetBills(ctx context.Context, in *BillsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Bill], error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	stream, err := c.cc.NewStream(ctx, &Billing_ServiceDesc.Streams[0], Billing_GetBills_FullMethodName, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &grpc.GenericClientStream[BillsRequest, Bill]{ClientStream: stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type Billing_GetBillsClient = grpc.ServerStreamingClient[Bill]
+
 // BillingServer is the server API for Billing service.
 // All implementations must embed UnimplementedBillingServer
 // for forward compatibility.
 type BillingServer interface {
 	AddBill(context.Context, *Bill) (*BillResponse, error)
+	GetBills(*BillsRequest, grpc.ServerStreamingServer[Bill]) error
 	mustEmbedUnimplementedBillingServer()
 }
 
@@ -64,6 +86,9 @@ type UnimplementedBillingServer struct{}
 
 func (UnimplementedBillingServer) AddBill(context.Context, *Bill) (*BillResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddBill not implemented")
+}
+func (UnimplementedBillingServer) GetBills(*BillsRequest, grpc.ServerStreamingServer[Bill]) error {
+	return status.Errorf(codes.Unimplemented, "method GetBills not implemented")
 }
 func (UnimplementedBillingServer) mustEmbedUnimplementedBillingServer() {}
 func (UnimplementedBillingServer) testEmbeddedByValue()                 {}
@@ -104,6 +129,17 @@ func _Billing_AddBill_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Billing_GetBills_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(BillsRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(BillingServer).GetBills(m, &grpc.GenericServerStream[BillsRequest, Bill]{ServerStream: stream})
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type Billing_GetBillsServer = grpc.ServerStreamingServer[Bill]
+
 // Billing_ServiceDesc is the grpc.ServiceDesc for Billing service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -116,6 +152,12 @@ var Billing_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Billing_AddBill_Handler,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "GetBills",
+			Handler:       _Billing_GetBills_Handler,
+			ServerStreams: true,
+		},
+	},
 	Metadata: "billing.proto",
 }

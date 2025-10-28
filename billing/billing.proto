@@ -6,6 +6,7 @@ option go_package = "github.com/iskanye/utilities-payment-proto/billing";
 
 service Billing {
     rpc AddBill (Bill) returns (BillResponse);
+    rpc GetBills (BillsRequest) returns (stream Bill);
 }
 
 message Bill {
@@ -15,4 +16,8 @@ message Bill {
 
 message BillResponse {
     int64 bill_id = 1;
+}
+
+message BillsRequest {
+    string address = 1;
 }
