@@ -26,6 +26,7 @@ type Bill struct {
 	BillId        *int64                 `protobuf:"varint,1,opt,name=bill_id,json=billId,proto3,oneof" json:"bill_id,omitempty"`
 	Address       string                 `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
 	Amount        int32                  `protobuf:"varint,3,opt,name=amount,proto3" json:"amount,omitempty"`
+	DueDate       *string                `protobuf:"bytes,4,opt,name=due_date,json=dueDate,proto3,oneof" json:"due_date,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -79,6 +80,13 @@ func (x *Bill) GetAmount() int32 {
 		return x.Amount
 	}
 	return 0
+}
+
+func (x *Bill) GetDueDate() string {
+	if x != nil && x.DueDate != nil {
+		return *x.DueDate
+	}
+	return ""
 }
 
 type BillResponse struct {
@@ -173,13 +181,15 @@ var File_billing_proto protoreflect.FileDescriptor
 
 const file_billing_proto_rawDesc = "" +
 	"\n" +
-	"\rbilling.proto\x12\abilling\"b\n" +
+	"\rbilling.proto\x12\abilling\"\x8f\x01\n" +
 	"\x04Bill\x12\x1c\n" +
 	"\abill_id\x18\x01 \x01(\x03H\x00R\x06billId\x88\x01\x01\x12\x18\n" +
 	"\aaddress\x18\x02 \x01(\tR\aaddress\x12\x16\n" +
-	"\x06amount\x18\x03 \x01(\x05R\x06amountB\n" +
+	"\x06amount\x18\x03 \x01(\x05R\x06amount\x12\x1e\n" +
+	"\bdue_date\x18\x04 \x01(\tH\x01R\adueDate\x88\x01\x01B\n" +
 	"\n" +
-	"\b_bill_id\"'\n" +
+	"\b_bill_idB\v\n" +
+	"\t_due_date\"'\n" +
 	"\fBillResponse\x12\x17\n" +
 	"\abill_id\x18\x01 \x01(\x03R\x06billId\"(\n" +
 	"\fBillsRequest\x12\x18\n" +
