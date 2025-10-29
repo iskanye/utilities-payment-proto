@@ -135,7 +135,7 @@ func (x *BillResponse) GetBillId() int64 {
 
 type BillsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Address       string                 `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -170,11 +170,11 @@ func (*BillsRequest) Descriptor() ([]byte, []int) {
 	return file_billing_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *BillsRequest) GetAddress() string {
+func (x *BillsRequest) GetUserId() int64 {
 	if x != nil {
-		return x.Address
+		return x.UserId
 	}
-	return ""
+	return 0
 }
 
 var File_billing_proto protoreflect.FileDescriptor
@@ -191,9 +191,9 @@ const file_billing_proto_rawDesc = "" +
 	"\b_bill_idB\v\n" +
 	"\t_due_date\"'\n" +
 	"\fBillResponse\x12\x17\n" +
-	"\abill_id\x18\x01 \x01(\x03R\x06billId\"(\n" +
-	"\fBillsRequest\x12\x18\n" +
-	"\aaddress\x18\x01 \x01(\tR\aaddress2n\n" +
+	"\abill_id\x18\x01 \x01(\x03R\x06billId\"'\n" +
+	"\fBillsRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x03R\x06userId2n\n" +
 	"\aBilling\x12/\n" +
 	"\aAddBill\x12\r.billing.Bill\x1a\x15.billing.BillResponse\x122\n" +
 	"\bGetBills\x12\x15.billing.BillsRequest\x1a\r.billing.Bill0\x01B4Z2github.com/iskanye/utilities-payment-proto/billingb\x06proto3"
