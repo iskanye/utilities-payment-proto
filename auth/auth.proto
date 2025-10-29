@@ -27,7 +27,6 @@ message LoginRequest {
 
 message LoginResponse {
   string token = 1;
-  int64 user_id = 2; 
 }
 
 message User {
