@@ -21,7 +21,6 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	Auth_Register_FullMethodName = "/auth.Auth/Register"
 	Auth_Login_FullMethodName    = "/auth.Auth/Login"
-	Auth_Validate_FullMethodName = "/auth.Auth/Validate"
 	Auth_IsAdmin_FullMethodName  = "/auth.Auth/IsAdmin"
 )
 
@@ -31,7 +30,6 @@ const (
 type AuthClient interface {
 	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
-	Validate(ctx context.Context, in *ValidateRequest, opts ...grpc.CallOption) (*ValidateResponse, error)
 	IsAdmin(ctx context.Context, in *User, opts ...grpc.CallOption) (*Permissions, error)
 }
 
@@ -63,16 +61,6 @@ func (c *authClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.C
 	return out, nil
 }
 
-func (c *authClient) Validate(ctx context.Context, in *ValidateRequest, opts ...grpc.CallOption) (*ValidateResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ValidateResponse)
-	err := c.cc.Invoke(ctx, Auth_Validate_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *authClient) IsAdmin(ctx context.Context, in *User, opts ...grpc.CallOption) (*Permissions, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Permissions)
@@ -89,7 +77,6 @@ func (c *authClient) IsAdmin(ctx context.Context, in *User, opts ...grpc.CallOpt
 type AuthServer interface {
 	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
-	Validate(context.Context, *ValidateRequest) (*ValidateResponse, error)
 	IsAdmin(context.Context, *User) (*Permissions, error)
 	mustEmbedUnimplementedAuthServer()
 }
@@ -106,9 +93,6 @@ func (UnimplementedAuthServer) Register(context.Context, *RegisterRequest) (*Reg
 }
 func (UnimplementedAuthServer) Login(context.Context, *LoginRequest) (*LoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
-}
-func (UnimplementedAuthServer) Validate(context.Context, *ValidateRequest) (*ValidateResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Validate not implemented")
 }
 func (UnimplementedAuthServer) IsAdmin(context.Context, *User) (*Permissions, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method IsAdmin not implemented")
@@ -170,24 +154,6 @@ func _Auth_Login_Handler(srv interface{}, ctx context.Context, dec func(interfac
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Auth_Validate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ValidateRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AuthServer).Validate(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Auth_Validate_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServer).Validate(ctx, req.(*ValidateRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Auth_IsAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(User)
 	if err := dec(in); err != nil {
@@ -220,10 +186,6 @@ var Auth_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Login",
 			Handler:    _Auth_Login_Handler,
-		},
-		{
-			MethodName: "Validate",
-			Handler:    _Auth_Validate_Handler,
 		},
 		{
 			MethodName: "IsAdmin",
