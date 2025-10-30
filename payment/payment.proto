@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package payment;
+
+option go_package = "github.com/iskanye/utilities-payment-proto/payment";
+
+enum PaymentStatus {
+    PENDING = 0;
+    OK = 1;
+    FAILED = 2;
+}
+
+service Payment {
+    rpc ProcessPayment (PaymentRequest) returns (PaymentResponse);
+}
+
+message PaymentRequest {
+    int32 amount = 1;
+}
+
+message PaymentResponse {
+    PaymentStatus status = 1;
+}

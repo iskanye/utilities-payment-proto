@@ -10,10 +10,7 @@ tasks:
 
   proto:
     desc: "Generate gRPC code" 
-    deps:
-      - auth
-        billing
-        payment
+    deps: [auth, billing, payment]
 
   auth:
     desc: "Generate auth gRPC code"  
