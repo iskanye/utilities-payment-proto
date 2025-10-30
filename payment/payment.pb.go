@@ -73,6 +73,7 @@ func (PaymentStatus) EnumDescriptor() ([]byte, []int) {
 type PaymentRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Amount        int32                  `protobuf:"varint,1,opt,name=amount,proto3" json:"amount,omitempty"`
+	BillId        int64                  `protobuf:"varint,2,opt,name=bill_id,json=billId,proto3" json:"bill_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -110,6 +111,13 @@ func (*PaymentRequest) Descriptor() ([]byte, []int) {
 func (x *PaymentRequest) GetAmount() int32 {
 	if x != nil {
 		return x.Amount
+	}
+	return 0
+}
+
+func (x *PaymentRequest) GetBillId() int64 {
+	if x != nil {
+		return x.BillId
 	}
 	return 0
 }
@@ -162,9 +170,10 @@ var File_payment_proto protoreflect.FileDescriptor
 
 const file_payment_proto_rawDesc = "" +
 	"\n" +
-	"\rpayment.proto\x12\apayment\"(\n" +
+	"\rpayment.proto\x12\apayment\"A\n" +
 	"\x0ePaymentRequest\x12\x16\n" +
-	"\x06amount\x18\x01 \x01(\x05R\x06amount\"A\n" +
+	"\x06amount\x18\x01 \x01(\x05R\x06amount\x12\x17\n" +
+	"\abill_id\x18\x02 \x01(\x03R\x06billId\"A\n" +
 	"\x0fPaymentResponse\x12.\n" +
 	"\x06status\x18\x01 \x01(\x0e2\x16.payment.PaymentStatusR\x06status*0\n" +
 	"\rPaymentStatus\x12\v\n" +
