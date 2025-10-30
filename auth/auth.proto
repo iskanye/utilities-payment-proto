@@ -8,7 +8,6 @@ option go_package = "github.com/iskanye/utilities-payment-proto/auth";
 service Auth {
   rpc Register (RegisterRequest) returns (RegisterResponse);
   rpc Login (LoginRequest) returns (LoginResponse);
-  rpc IsAdmin (User) returns (Permissions);
 }
 
 message RegisterRequest {
@@ -27,12 +26,4 @@ message LoginRequest {
 
 message LoginResponse {
   string token = 1;
-}
-
-message User {
-  int64 user_id = 1;
-}
-
-message Permissions {
-  bool isAdmin = 1;
 }
