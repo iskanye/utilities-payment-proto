@@ -6,16 +6,24 @@ version: "3"
 tasks:  
   default:
     cmds:  
-      - task: auth  
+      - task: proto  
+
+  proto:
+    desc: "Generate gRPC code" 
+    deps:
+      - auth
+        billing
+        payment
+
   auth:
-    aliases:
-      - gen  
     desc: "Generate auth gRPC code"  
     cmds:
       - protoc -I=auth --go_out=auth --go_opt=paths=source_relative --go-grpc_out=auth --go-grpc_opt=paths=source_relative auth/auth.proto
   billing:
-    aliases:
-      - gen  
     desc: "Generate billing gRPC code"  
     cmds:
-      - protoc -I=billing --go_out=billing --go_opt=paths=source_relative --go-grpc_out=billing --go-grpc_opt=paths=source_relative billing/billing.proto
+      - protoc -I=billing --go_out=billing --go_opt=paths=source_relative --go-grpc_out=billing --go-grpc_opt=paths=source_relative billing/billing.proto      
+  payment:
+    desc: "Generate payment gRPC code"  
+    cmds:
+      - protoc -I=payment --go_out=payment --go_opt=paths=source_relative --go-grpc_out=payment --go-grpc_opt=paths=source_relative payment/payment.proto
