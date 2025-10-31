@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	Auth_Register_FullMethodName = "/auth.Auth/Register"
 	Auth_Login_FullMethodName    = "/auth.Auth/Login"
+	Auth_Users_FullMethodName    = "/auth.Auth/Users"
 )
 
 // AuthClient is the client API for Auth service.
@@ -29,6 +30,7 @@ const (
 type AuthClient interface {
 	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
+	Users(ctx context.Context, in *UsersRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[User], error)
 }
 
 type authClient struct {
@@ -59,12 +61,32 @@ func (c *authClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.C
 	return out, nil
 }
 
+func (c *authClient) Users(ctx context.Context, in *UsersRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[User], error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	stream, err := c.cc.NewStream(ctx, &Auth_ServiceDesc.Streams[0], Auth_Users_FullMethodName, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &grpc.GenericClientStream[UsersRequest, User]{ClientStream: stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type Auth_UsersClient = grpc.ServerStreamingClient[User]
+
 // AuthServer is the server API for Auth service.
 // All implementations must embed UnimplementedAuthServer
 // for forward compatibility.
 type AuthServer interface {
 	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
+	Users(*UsersRequest, grpc.ServerStreamingServer[User]) error
 	mustEmbedUnimplementedAuthServer()
 }
 
@@ -80,6 +102,9 @@ func (UnimplementedAuthServer) Register(context.Context, *RegisterRequest) (*Reg
 }
 func (UnimplementedAuthServer) Login(context.Context, *LoginRequest) (*LoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+}
+func (UnimplementedAuthServer) Users(*UsersRequest, grpc.ServerStreamingServer[User]) error {
+	return status.Errorf(codes.Unimplemented, "method Users not implemented")
 }
 func (UnimplementedAuthServer) mustEmbedUnimplementedAuthServer() {}
 func (UnimplementedAuthServer) testEmbeddedByValue()              {}
@@ -138,6 +163,17 @@ func _Auth_Login_Handler(srv interface{}, ctx context.Context, dec func(interfac
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Auth_Users_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(UsersRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(AuthServer).Users(m, &grpc.GenericServerStream[UsersRequest, User]{ServerStream: stream})
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type Auth_UsersServer = grpc.ServerStreamingServer[User]
+
 // Auth_ServiceDesc is the grpc.ServiceDesc for Auth service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -154,6 +190,12 @@ var Auth_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Auth_Login_Handler,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "Users",
+			Handler:       _Auth_Users_Handler,
+			ServerStreams: true,
+		},
+	},
 	Metadata: "auth.proto",
 }
