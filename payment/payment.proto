@@ -16,7 +16,6 @@ service Payment {
 
 message PaymentRequest {
     int32 amount = 1;
-    int64 bill_id = 2;
 }
 
 message PaymentResponse {
