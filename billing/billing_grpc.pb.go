@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	Billing_AddBill_FullMethodName  = "/billing.Billing/AddBill"
 	Billing_GetBills_FullMethodName = "/billing.Billing/GetBills"
+	Billing_GetBill_FullMethodName  = "/billing.Billing/GetBill"
 	Billing_PayBill_FullMethodName  = "/billing.Billing/PayBill"
 )
 
@@ -30,6 +31,7 @@ const (
 type BillingClient interface {
 	AddBill(ctx context.Context, in *Bill, opts ...grpc.CallOption) (*BillResponse, error)
 	GetBills(ctx context.Context, in *BillsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Bill], error)
+	GetBill(ctx context.Context, in *BillRequest, opts ...grpc.CallOption) (*Bill, error)
 	PayBill(ctx context.Context, in *PayRequest, opts ...grpc.CallOption) (*PayResponse, error)
 }
 
@@ -70,6 +72,16 @@ func (c *billingClient) GetBills(ctx context.Context, in *BillsRequest, opts ...
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type Billing_GetBillsClient = grpc.ServerStreamingClient[Bill]
 
+func (c *billingClient) GetBill(ctx context.Context, in *BillRequest, opts ...grpc.CallOption) (*Bill, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Bill)
+	err := c.cc.Invoke(ctx, Billing_GetBill_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *billingClient) PayBill(ctx context.Context, in *PayRequest, opts ...grpc.CallOption) (*PayResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(PayResponse)
@@ -86,6 +98,7 @@ func (c *billingClient) PayBill(ctx context.Context, in *PayRequest, opts ...grp
 type BillingServer interface {
 	AddBill(context.Context, *Bill) (*BillResponse, error)
 	GetBills(*BillsRequest, grpc.ServerStreamingServer[Bill]) error
+	GetBill(context.Context, *BillRequest) (*Bill, error)
 	PayBill(context.Context, *PayRequest) (*PayResponse, error)
 	mustEmbedUnimplementedBillingServer()
 }
@@ -102,6 +115,9 @@ func (UnimplementedBillingServer) AddBill(context.Context, *Bill) (*BillResponse
 }
 func (UnimplementedBillingServer) GetBills(*BillsRequest, grpc.ServerStreamingServer[Bill]) error {
 	return status.Errorf(codes.Unimplemented, "method GetBills not implemented")
+}
+func (UnimplementedBillingServer) GetBill(context.Context, *BillRequest) (*Bill, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBill not implemented")
 }
 func (UnimplementedBillingServer) PayBill(context.Context, *PayRequest) (*PayResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PayBill not implemented")
@@ -156,6 +172,24 @@ func _Billing_GetBills_Handler(srv interface{}, stream grpc.ServerStream) error 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type Billing_GetBillsServer = grpc.ServerStreamingServer[Bill]
 
+func _Billing_GetBill_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BillRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BillingServer).GetBill(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Billing_GetBill_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BillingServer).GetBill(ctx, req.(*BillRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Billing_PayBill_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PayRequest)
 	if err := dec(in); err != nil {
@@ -184,6 +218,10 @@ var Billing_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddBill",
 			Handler:    _Billing_AddBill_Handler,
+		},
+		{
+			MethodName: "GetBill",
+			Handler:    _Billing_GetBill_Handler,
 		},
 		{
 			MethodName: "PayBill",

@@ -141,6 +141,50 @@ func (x *BillResponse) GetBillId() int64 {
 	return 0
 }
 
+type BillRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	BillId        int64                  `protobuf:"varint,1,opt,name=bill_id,json=billId,proto3" json:"bill_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BillRequest) Reset() {
+	*x = BillRequest{}
+	mi := &file_billing_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BillRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BillRequest) ProtoMessage() {}
+
+func (x *BillRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_billing_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BillRequest.ProtoReflect.Descriptor instead.
+func (*BillRequest) Descriptor() ([]byte, []int) {
+	return file_billing_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *BillRequest) GetBillId() int64 {
+	if x != nil {
+		return x.BillId
+	}
+	return 0
+}
+
 type BillsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
@@ -150,7 +194,7 @@ type BillsRequest struct {
 
 func (x *BillsRequest) Reset() {
 	*x = BillsRequest{}
-	mi := &file_billing_proto_msgTypes[2]
+	mi := &file_billing_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -162,7 +206,7 @@ func (x *BillsRequest) String() string {
 func (*BillsRequest) ProtoMessage() {}
 
 func (x *BillsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_billing_proto_msgTypes[2]
+	mi := &file_billing_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -175,7 +219,7 @@ func (x *BillsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BillsRequest.ProtoReflect.Descriptor instead.
 func (*BillsRequest) Descriptor() ([]byte, []int) {
-	return file_billing_proto_rawDescGZIP(), []int{2}
+	return file_billing_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *BillsRequest) GetUserId() int64 {
@@ -194,7 +238,7 @@ type PayRequest struct {
 
 func (x *PayRequest) Reset() {
 	*x = PayRequest{}
-	mi := &file_billing_proto_msgTypes[3]
+	mi := &file_billing_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -206,7 +250,7 @@ func (x *PayRequest) String() string {
 func (*PayRequest) ProtoMessage() {}
 
 func (x *PayRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_billing_proto_msgTypes[3]
+	mi := &file_billing_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -219,7 +263,7 @@ func (x *PayRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PayRequest.ProtoReflect.Descriptor instead.
 func (*PayRequest) Descriptor() ([]byte, []int) {
-	return file_billing_proto_rawDescGZIP(), []int{3}
+	return file_billing_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *PayRequest) GetBillId() int64 {
@@ -237,7 +281,7 @@ type PayResponse struct {
 
 func (x *PayResponse) Reset() {
 	*x = PayResponse{}
-	mi := &file_billing_proto_msgTypes[4]
+	mi := &file_billing_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -249,7 +293,7 @@ func (x *PayResponse) String() string {
 func (*PayResponse) ProtoMessage() {}
 
 func (x *PayResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_billing_proto_msgTypes[4]
+	mi := &file_billing_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -262,7 +306,7 @@ func (x *PayResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PayResponse.ProtoReflect.Descriptor instead.
 func (*PayResponse) Descriptor() ([]byte, []int) {
-	return file_billing_proto_rawDescGZIP(), []int{4}
+	return file_billing_proto_rawDescGZIP(), []int{5}
 }
 
 var File_billing_proto protoreflect.FileDescriptor
@@ -280,16 +324,19 @@ const file_billing_proto_rawDesc = "" +
 	"\b_bill_idB\v\n" +
 	"\t_due_date\"'\n" +
 	"\fBillResponse\x12\x17\n" +
+	"\abill_id\x18\x01 \x01(\x03R\x06billId\"&\n" +
+	"\vBillRequest\x12\x17\n" +
 	"\abill_id\x18\x01 \x01(\x03R\x06billId\"'\n" +
 	"\fBillsRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\x03R\x06userId\"%\n" +
 	"\n" +
 	"PayRequest\x12\x17\n" +
 	"\abill_id\x18\x01 \x01(\x03R\x06billId\"\r\n" +
-	"\vPayResponse2\xa4\x01\n" +
+	"\vPayResponse2\xd4\x01\n" +
 	"\aBilling\x12/\n" +
 	"\aAddBill\x12\r.billing.Bill\x1a\x15.billing.BillResponse\x122\n" +
-	"\bGetBills\x12\x15.billing.BillsRequest\x1a\r.billing.Bill0\x01\x124\n" +
+	"\bGetBills\x12\x15.billing.BillsRequest\x1a\r.billing.Bill0\x01\x12.\n" +
+	"\aGetBill\x12\x14.billing.BillRequest\x1a\r.billing.Bill\x124\n" +
 	"\aPayBill\x12\x13.billing.PayRequest\x1a\x14.billing.PayResponseB4Z2github.com/iskanye/utilities-payment-proto/billingb\x06proto3"
 
 var (
@@ -304,23 +351,26 @@ func file_billing_proto_rawDescGZIP() []byte {
 	return file_billing_proto_rawDescData
 }
 
-var file_billing_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_billing_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_billing_proto_goTypes = []any{
 	(*Bill)(nil),         // 0: billing.Bill
 	(*BillResponse)(nil), // 1: billing.BillResponse
-	(*BillsRequest)(nil), // 2: billing.BillsRequest
-	(*PayRequest)(nil),   // 3: billing.PayRequest
-	(*PayResponse)(nil),  // 4: billing.PayResponse
+	(*BillRequest)(nil),  // 2: billing.BillRequest
+	(*BillsRequest)(nil), // 3: billing.BillsRequest
+	(*PayRequest)(nil),   // 4: billing.PayRequest
+	(*PayResponse)(nil),  // 5: billing.PayResponse
 }
 var file_billing_proto_depIdxs = []int32{
 	0, // 0: billing.Billing.AddBill:input_type -> billing.Bill
-	2, // 1: billing.Billing.GetBills:input_type -> billing.BillsRequest
-	3, // 2: billing.Billing.PayBill:input_type -> billing.PayRequest
-	1, // 3: billing.Billing.AddBill:output_type -> billing.BillResponse
-	0, // 4: billing.Billing.GetBills:output_type -> billing.Bill
-	4, // 5: billing.Billing.PayBill:output_type -> billing.PayResponse
-	3, // [3:6] is the sub-list for method output_type
-	0, // [0:3] is the sub-list for method input_type
+	3, // 1: billing.Billing.GetBills:input_type -> billing.BillsRequest
+	2, // 2: billing.Billing.GetBill:input_type -> billing.BillRequest
+	4, // 3: billing.Billing.PayBill:input_type -> billing.PayRequest
+	1, // 4: billing.Billing.AddBill:output_type -> billing.BillResponse
+	0, // 5: billing.Billing.GetBills:output_type -> billing.Bill
+	0, // 6: billing.Billing.GetBill:output_type -> billing.Bill
+	5, // 7: billing.Billing.PayBill:output_type -> billing.PayResponse
+	4, // [4:8] is the sub-list for method output_type
+	0, // [0:4] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -338,7 +388,7 @@ func file_billing_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_billing_proto_rawDesc), len(file_billing_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
